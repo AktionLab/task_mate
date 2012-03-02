@@ -11,7 +11,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120302022435) do
+ActiveRecord::Schema.define(:version => 20120302040851) do
+
+  create_table "assignments", :force => true do |t|
+    t.integer  "assignable_id"
+    t.string   "assignable_type"
+    t.integer  "task_id"
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+  end
+
+  add_index "assignments", ["assignable_id", "assignable_type"], :name => "index_assignments_on_assignable_id_and_assignable_type"
+  add_index "assignments", ["task_id"], :name => "index_assignments_on_task_id"
 
   create_table "tasks", :force => true do |t|
     t.string   "subject"
@@ -27,7 +38,7 @@ ActiveRecord::Schema.define(:version => 20120302022435) do
   create_table "users", :force => true do |t|
     t.string   "first_name"
     t.string   "last_name"
-    t.string   "alias"
+    t.string   "alias_name"
     t.datetime "created_at",                             :null => false
     t.datetime "updated_at",                             :null => false
     t.string   "email",                  :default => "", :null => false
