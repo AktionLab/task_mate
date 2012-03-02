@@ -19,12 +19,11 @@ end
 group :development, :test do
   gem 'faker'
   gem 'rspec-rails'
-  gem 'factory_girl_rails', :require => false
+  gem 'factory_girl_rails'
   gem 'shoulda-matchers'
 end
 
 group :development do
-  gem 'spork-rails'
   gem 'guard'
   gem 'guard-spork'
   gem 'guard-bundler'
