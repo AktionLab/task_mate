@@ -7,8 +7,12 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-
-<%= yield %>
-
+  <% if Rails.env.development? %>
+    <%= render 'shared/dev_menu' %>
+  <% end %>
+  <div id="page_wrapper">
+    <%= yield %>
+  </div>
 </body>
 </html>
+
