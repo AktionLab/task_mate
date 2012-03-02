@@ -12,8 +12,8 @@
 
 <p>
   <b>Alias:</b>
-  <%= @user.alias %>
+  <%= @user.alias_name %>
 </p>
 
 
-<%= link_to 'Edit', edit_user_path(@user) %> |
+<%= link_to 'Manage Account', edit_registration_path(@user) %>
