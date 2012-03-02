@@ -19,12 +19,13 @@ require 'spec_helper'
 # that an instance is receiving a specific message.
 
 describe UsersController do
+  let!(:user) { Factory(:user) }
 
   # This should return the minimal set of attributes required to create a valid
   # User. As you add validations to User, be sure to
   # update the return value of this method accordingly.
   def valid_attributes
-    {first_name: 'FirstName', last_name: 'LastName', alias_name: 'Alias', email: 'email@example.com', password: 'password', password_confirmation: 'password'}
+    Factory.attributes_for(:user)
   end
   
   # This should return the minimal set of values that should be in the session
@@ -36,61 +37,15 @@ describe UsersController do
 
   describe "GET show" do
     it "assigns the requested user as @user" do
-      user = User.create! valid_attributes
       get :show, {:id => user.to_param}, valid_session
       assigns(:user).should eq(user)
     end
-  end
 
-  describe "GET edit" do
-    it "assigns the requested user as @user" do
-      user = User.create! valid_attributes
-      get :edit, {:id => user.to_param}, valid_session
-      assigns(:user).should eq(user)
-    end
-  end
-
-  describe "PUT update" do
-    describe "with valid params" do
-      it "updates the requested user" do
-        user = User.create! valid_attributes
-        # Assuming there are no other users in the database, this
-        # specifies that the User created on the previous line
-        # receives the :update_attributes message with whatever params are
-        # submitted in the request.
-        User.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
-        put :update, {:id => user.to_param, :user => {'these' => 'params'}}, valid_session
-      end
-
-      it "assigns the requested user as @user" do
-        user = User.create! valid_attributes
-        put :update, {:id => user.to_param, :user => valid_attributes}, valid_session
-        assigns(:user).should eq(user)
-      end
-
-      it "redirects to the user" do
-        user = User.create! valid_attributes
-        put :update, {:id => user.to_param, :user => valid_attributes}, valid_session
-        response.should redirect_to(user)
-      end
-    end
-
-    describe "with invalid params" do
-      it "assigns the user as @user" do
-        user = User.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        User.any_instance.stub(:save).and_return(false)
-        put :update, {:id => user.to_param, :user => {}}, valid_session
-        assigns(:user).should eq(user)
-      end
-
-      it "re-renders the 'edit' template" do
-        user = User.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        User.any_instance.stub(:save).and_return(false)
-        put :update, {:id => user.to_param, :user => {}}, valid_session
-        response.should render_template("edit")
-      end
+    it "assigns the request users's tasks as @tasks" do
+      tasks = 3.times.inject([]) { |t,i| t + [Factory(:assignment, :assignable => user)] }.map(&:task)
+      get :show, {:id => user.to_param}, valid_session
+      assigns(:tasks).should eq(tasks)
     end
   end
 end
+
