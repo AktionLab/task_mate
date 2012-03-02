@@ -21,6 +21,11 @@ describe Task do
 
   describe 'associations' do
     it { should have_many(:assignments) }
+    
+    it 'should remove all assignments when deleted' do
+      assignment = Factory(:assignment)
+      expect { assignment.task.destroy }.to change { Assignment.count }.by(-1)
+    end
   end
 end
 
