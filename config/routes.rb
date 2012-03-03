@@ -3,7 +3,7 @@ TaskMate::Application.routes.draw do
 
   resources :users, :only => [:show]
 
-  root :to => 'tasks#index'
-  resources :tasks
-
+  root :to => 'tasks#new'
+  resources :tasks, :except => [:index]
 end
+

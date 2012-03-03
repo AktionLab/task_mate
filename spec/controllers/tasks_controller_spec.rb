@@ -34,14 +34,6 @@ describe TasksController do
     {}
   end
 
-  describe "GET index" do
-    it "assigns all tasks as @tasks" do
-      task = Task.create! valid_attributes
-      get :index, {}, valid_session
-      assigns(:tasks).should eq([task])
-    end
-  end
-
   describe "GET show" do
     it "assigns the requested task as @task" do
       task = Task.create! valid_attributes
