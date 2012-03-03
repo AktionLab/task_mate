@@ -4,7 +4,8 @@ restricted_user_alias_names = %w(sign_in sign_out sign_up users tasks about cont
 describe User do
   describe 'factories' do
     it 'should have a valid default factory' do
-      Factory.build(:user).should be_valid
+      Factory(:user)
+      Factory(:user)
     end
   end
 
