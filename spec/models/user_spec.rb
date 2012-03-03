@@ -1,5 +1,6 @@
 require 'spec_helper'
 
+restricted_user_alias_names = %w(sign_in sign_out sign_up users tasks about contact contact_us admin)
 describe User do
   describe 'factories' do
     it 'should have a valid default factory' do
@@ -34,6 +35,17 @@ describe User do
     it { should_not allow_mass_assignment_of(:current_sign_in_ip) }
     it { should_not allow_mass_assignment_of(:last_sign_in_ip) }
 
+    context 'uniqueness' do
+      before(:each) { Factory(:user) }
+      it { should validate_uniqueness_of(:alias_name).case_insensitive }
+    end
+
+    it 'should reject aliases from a select list' do
+      restricted_user_alias_names.each do |word|
+        factory = Factory.build(:user, :alias_name => word)
+        factory.should_not be_valid
+      end
+    end
   end
 
   describe 'associations' do
