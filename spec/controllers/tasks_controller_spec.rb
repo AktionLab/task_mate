@@ -78,6 +78,11 @@ describe TasksController do
         post :create, {:task => Factory.attributes_for(:task)}
         response.should redirect_to(Task.last)
       end
+
+      it "assigns the new task to the current user" do
+        post :create, {:task => Factory.attributes_for(:task)}
+        assigns(:task).assignments.map(&:assignable).should eq([@user])
+      end
     end
 
     describe "with invalid params" do

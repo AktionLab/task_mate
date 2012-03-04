@@ -28,6 +28,7 @@ class TasksController < ApplicationController
   def create
     respond_to do |format|
       if @task.save
+        current_user.tasks << @task
         format.html { redirect_to @task, notice: 'Task was successfully created.' }
         format.json { render json: @task, status: :created, location: @task }
       else
