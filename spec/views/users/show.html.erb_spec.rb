@@ -31,6 +31,11 @@ describe "users/show" do
       rendered.should have_selector('li#task_2')
     end
 
+    it 'has a task class on each task' do
+      rendered.should have_selector('li#task_1.task')
+      rendered.should have_selector('li#task_2.task')
+    end
+
     it "renders the task subject" do
       rendered.should match(/Task1/)
       rendered.should match(/Task2/)
@@ -44,6 +49,7 @@ describe "users/show" do
     it "renders elements with classes matching field names" do
       rendered.should have_selector('.subject')
       rendered.should have_selector('.description')
+      rendered.should have_selector('.created_at')
     end
   end
 end

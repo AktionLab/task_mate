@@ -1,4 +1,13 @@
-<li id="<%= dom_id(task) %>">
-  <span class="subject"><%= task.subject %></span>
+<li class="task" id="<%= dom_id(task) %>">
+  <h2 class="subject">
+    <% if can? :update, task %>
+      <span class="edit action"><%= link_to "Edit", edit_task_path(task) %></span>
+    <% end %>
+    <% if can? :destroy, task %>
+      <span class="destroy action"><%= link_to "Destroy", task_path(task), :method => :delete %></span>
+    <% end %>
+    <%= task.subject %>
+    <span class="created_at">Created <%= time_ago_in_words task.created_at %> ago</span>
+  </h2>
   <p class="description"><%= task.description %></p>
 </li>
