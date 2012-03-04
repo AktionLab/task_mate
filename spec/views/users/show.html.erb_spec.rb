@@ -23,12 +23,12 @@ describe "users/show" do
     before(:each) { render }
 
     it "has a #tasks element" do
-      rendered.should match(/id="tasks"/)
+      rendered.should have_selector('ul#tasks')
     end
 
     it "has dom ids for each task" do
-      rendered.should match(/id="task_1"/)
-      rendered.should match(/id="task_2"/)
+      rendered.should have_selector('li#task_1')
+      rendered.should have_selector('li#task_2')
     end
 
     it "renders the task subject" do
@@ -42,8 +42,8 @@ describe "users/show" do
     end
 
     it "renders elements with classes matching field names" do
-      rendered.should match(/class="(?:.+ )?subject.*"/)
-      rendered.should match(/class=".*description.*"/)
+      rendered.should have_selector('.subject')
+      rendered.should have_selector('.description')
     end
   end
 end
