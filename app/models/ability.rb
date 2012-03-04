@@ -3,16 +3,19 @@ class Ability
 
   def initialize(user)
     user ||= User.new
+    
+    unless user.new_record?
+      can :show, User do |some_user|
+        some_user == user
+      end
 
-    can :manage, :all
+      can :create, Task
+      can [:read, :update, :destroy], Task do |task|
+        task.assignments.first.assignable == user
+      end
 
-    cannot [:show,:edit,:update,:destroy], Task do |task|
-      task.assignments.first.assignable != user
     end
 
-    cannot :show, User do |some_user|
-      some_user != user
-    end
     # Define abilities for the passed in user here. For example:
     #
     #   user ||= User.new # guest user (not logged in)
