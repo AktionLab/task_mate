@@ -16,7 +16,6 @@ describe "tasks/edit" do
     assert_select "form", :action => tasks_path(@task), :method => "post" do
       assert_select "input#task_subject", :name => "task[subject]"
       assert_select "textarea#task_description", :name => "task[description]"
-      assert_select "input#task_state", :name => "task[state]"
     end
   end
 end
