@@ -4,11 +4,26 @@ describe TasksController do
   login_user
 
   let!(:task) { @user.tasks.create! Factory.attributes_for(:task) }
+  let(:other_user) { Factory(:user) }
 
   describe "GET show" do
     it "assigns the requested task as @task" do
       get :show, {:id => task.to_param}
       assigns(:task).should eq(task)
+    end
+
+    it "raises access denied when not assigned to the user" do
+      other_user_task = other_user.tasks.create! Factory.attributes_for(:task)
+      expect {
+        get :show, {:id => other_user_task.to_param}
+      }.to raise_error(CanCan::AccessDenied)
+    end
+
+    it "raises access denied if not logged in" do
+      sign_out @user
+      expect {
+        get :show, {:id => task.to_param}
+      }.to raise_error(CanCan::AccessDenied)
     end
   end
 
@@ -17,12 +32,31 @@ describe TasksController do
       get :new, {}
       assigns(:task).should be_a_new(Task)
     end
+
+    it "raises access denied if not logged in" do
+      sign_out @user
+      expect { get :new }.to raise_error(CanCan::AccessDenied)
+    end
   end
 
   describe "GET edit" do
     it "assigns the requested task as @task" do
       get :edit, {:id => task.to_param}
       assigns(:task).should eq(task)
+    end
+
+    it "raises access denied if not assigned to the task" do
+      other_user_task = other_user.tasks.create! Factory.attributes_for(:task)
+      expect {
+        get :edit, {:id => other_user_task.to_param}
+      }.to raise_error(CanCan::AccessDenied)
+    end
+
+    it "raises access denied if not logged in" do
+      sign_out @user
+      expect {
+        get :edit, {:id => task.to_param}
+      }.to raise_error(CanCan::AccessDenied)
     end
   end
 
@@ -59,6 +93,13 @@ describe TasksController do
         response.should render_template("new")
       end
     end
+
+    it "raises access denied if not logged in" do
+      sign_out @user
+      expect {
+        post :create, {:task => {}}
+      }.to raise_error(CanCan::AccessDenied)
+    end
   end
 
   describe "PUT update" do
@@ -92,6 +133,20 @@ describe TasksController do
         response.should render_template("edit")
       end
     end
+
+    it "raises access denied if not assigned to the task" do
+      other_user_task = other_user.tasks.create! Factory.attributes_for(:task)
+      expect {
+        put :update, {:id => other_user_task.to_param, :task => {}}
+      }.to raise_error(CanCan::AccessDenied)
+    end
+
+    it "raises access denied if not logged in" do
+      sign_out @user
+      expect {
+        put :update, {:id => task.to_param, :task => {}}
+      }.to raise_error(CanCan::AccessDenied)
+    end
   end
 
   describe "DELETE destroy" do
@@ -104,6 +159,20 @@ describe TasksController do
     it "redirects to the tasks list" do
       delete :destroy, {:id => task.to_param}
       response.should redirect_to(tasks_url)
+    end
+
+    it "raises access denied if not assigned to the task" do
+      other_user_task = other_user.tasks.create! Factory.attributes_for(:task)
+      expect {
+        delete :destroy, {:id => other_user_task.to_param}
+      }.to raise_error(CanCan::AccessDenied)
+    end
+
+    it "raises access denied if not logged in" do
+      sign_out @user
+      expect {
+        delete :destroy, {:id => task.to_param}
+      }.to raise_error(CanCan::AccessDenied)
     end
   end
 end

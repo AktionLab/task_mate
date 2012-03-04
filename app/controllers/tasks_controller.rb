@@ -1,9 +1,9 @@
 class TasksController < ApplicationController
+  load_and_authorize_resource
+
   # GET /tasks/1
   # GET /tasks/1.json
   def show
-    @task = Task.find(params[:id])
-
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @task }
@@ -13,8 +13,6 @@ class TasksController < ApplicationController
   # GET /tasks/new
   # GET /tasks/new.json
   def new
-    @task = Task.new
-
     respond_to do |format|
       format.html # new.html.erb
       format.json { render json: @task }
@@ -23,14 +21,11 @@ class TasksController < ApplicationController
 
   # GET /tasks/1/edit
   def edit
-    @task = Task.find(params[:id])
   end
 
   # POST /tasks
   # POST /tasks.json
   def create
-    @task = Task.new(params[:task])
-
     respond_to do |format|
       if @task.save
         format.html { redirect_to @task, notice: 'Task was successfully created.' }
@@ -45,8 +40,6 @@ class TasksController < ApplicationController
   # PUT /tasks/1
   # PUT /tasks/1.json
   def update
-    @task = Task.find(params[:id])
-
     respond_to do |format|
       if @task.update_attributes(params[:task])
         format.html { redirect_to @task, notice: 'Task was successfully updated.' }
@@ -61,7 +54,6 @@ class TasksController < ApplicationController
   # DELETE /tasks/1
   # DELETE /tasks/1.json
   def destroy
-    @task = Task.find(params[:id])
     @task.destroy
 
     respond_to do |format|
