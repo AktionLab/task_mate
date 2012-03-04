@@ -1,4 +1,5 @@
 require 'rubygems'
+require 'webrat'
 
 ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path("../../config/environment", __FILE__)
@@ -10,5 +11,9 @@ RSpec.configure do |config|
   config.infer_base_class_for_anonymous_controllers = false
   config.include Devise::TestHelpers, :type => :controller
   config.extend ControllerMacros, :type => :controller
+end
+
+Webrat.configure do |config|
+  config.mode = :rails
 end
 
