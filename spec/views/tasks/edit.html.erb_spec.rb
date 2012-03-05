@@ -36,3 +36,4 @@ describe "tasks/edit" do
     rendered.should have_selector("a[href='/users/#{@user.to_param}']")
   end
 end
+
