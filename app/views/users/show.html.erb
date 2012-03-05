@@ -1,22 +1,9 @@
-<p id="notice"><%= notice %></p>
+<header class="user">
+  <span class="alias"><%= @user.alias_name %></span>
+  <span class="name">(<%= @user.first_name %> <%= @user.last_name %>)</span>
+  <%= link_to 'Manage Account', edit_registration_path(@user), :class => 'manage' %>
+</header>
 
-<p>
-  <b>First name:</b>
-  <%= @user.first_name %>
-</p>
-
-<p>
-  <b>Last name:</b>
-  <%= @user.last_name %>
-</p>
-
-<p>
-  <b>Alias:</b>
-  <%= @user.alias_name %>
-</p>
-
-
-<%= link_to 'Manage Account', edit_registration_path(@user) %>
 
 <ul id="tasks"><%= render @tasks %></ul>
 
