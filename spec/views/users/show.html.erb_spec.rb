@@ -9,7 +9,7 @@ describe "users/show" do
     @user = assign(:user, stub_model(User,
       :first_name => "First Name",
       :last_name => "Last Name",
-      :alias => "Alias",
+      :alias_name => "Alias",
       :new_record? => false
     ))
 
@@ -18,7 +18,7 @@ describe "users/show" do
     @controller.stub(:current_ability => @ability)
   end
 
-  it "renders attributes in <p>" do
+  it "displays the users name and alias" do
     render
     rendered.should match(/First Name/)
     rendered.should match(/Last Name/)
