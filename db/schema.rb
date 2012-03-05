@@ -32,7 +32,7 @@ ActiveRecord::Schema.define(:version => 20120305094850) do
 
   create_table "task_lists_users", :id => false, :force => true do |t|
     t.integer "task_list_id"
-    t.integer "users_id"
+    t.integer "user_id"
   end
 
   create_table "tasks", :force => true do |t|
