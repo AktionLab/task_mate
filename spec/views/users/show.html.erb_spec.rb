@@ -68,6 +68,12 @@ describe "users/show" do
       rendered.should have_selector('.created_at')
     end
 
+    it "has links to each task" do
+      render
+      rendered.should have_selector("a[href='/tasks/#{@task1.to_param}']")
+      rendered.should have_selector("a[href='/tasks/#{@task2.to_param}']")
+    end
+
     describe "authorized actions" do
       it "does not include the edit link when not allowed" do
         render

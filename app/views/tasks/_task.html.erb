@@ -6,7 +6,7 @@
     <% if can? :destroy, task %>
       <span class="destroy action"><%= link_to "Destroy", task_path(task), :method => :delete %></span>
     <% end %>
-    <%= task.subject %>
+    <%= link_to task.subject, task %>
     <span class="created_at">Created <%= time_ago_in_words task.created_at %> ago</span>
   </h2>
   <p class="description"><%= task.description %></p>
