@@ -11,6 +11,10 @@ class User < ActiveRecord::Base
 
   has_many :assignments, :as => :assignable, :dependent => :delete_all
   has_many :tasks, :through => :assignments
+  has_and_belongs_to_many :task_lists
+
+  Assignment.class_eval { scope :users, where(:assignable_type => 'User') }
+  Task.class_eval { def users; assignments.users.map(&:assignable); end }
 
   validates :first_name, :presence => true, :length => {:maximum => 255}
   validates :last_name, :presence => true, :length => {:maximum => 255}

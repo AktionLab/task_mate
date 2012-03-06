@@ -52,10 +52,29 @@ describe User do
   describe 'associations' do
     it { should have_many(:assignments) }
     it { should have_many(:tasks) }
+    it { should have_and_belong_to_many(:task_lists) }
 
     it 'should remove all assignments when deleted' do
       assignment = Factory(:assignment)
       expect { assignment.assignable.destroy }.to change { Assignment.count }.by(-1)
+    end
+
+    it 'should add a users scope to assignments' do
+      user1 = Factory.create(:user)
+      user2 = Factory.create(:user)
+      task_list = Factory.create(:task_list)
+      task = user1.tasks.create! Factory.attributes_for(:task)
+      task_list.tasks << task
+      user2.tasks << task
+      task.assignments.users.should == [user1.assignments.first,user2.assignments.first]
+    end
+
+    it 'should add a users method to task' do
+      user1 = Factory.create(:user)
+      user2 = Factory.create(:user)
+      task = user1.tasks.create! Factory.attributes_for(:task)
+      user2.tasks << task
+      task.users.should == [user1,user2]
     end
   end
 end

@@ -11,4 +11,9 @@ describe Assignment do
     it { should validate_presence_of(:assignable) }
     it { should validate_presence_of(:task) }
   end
+
+  describe 'associations' do
+    it { should belong_to(:assignable) }
+    it { should belong_to(:task) }
+  end
 end
