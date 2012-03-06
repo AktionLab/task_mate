@@ -1,6 +1,11 @@
 require 'spec_helper'
 
 describe TaskListsController do
+  login_user
+  before(:each) { @controller.current_user }
+
+  let!(:task_list) { @user.task_lists.create! Factory.attributes_for(:task_list) }
+  let(:other_user) { Factory(:user) }
 
   def valid_attributes
     Factory.attributes_for(:task_list)
@@ -10,19 +15,25 @@ describe TaskListsController do
     {}
   end
 
-  describe "GET index" do
-    it "assigns all task_lists as @task_lists" do
-      task_list = TaskList.create! valid_attributes
-      get :index, {}, valid_session
-      assigns(:task_lists).should eq([task_list])
-    end
-  end
-
   describe "GET show" do
     it "assigns the requested task_list as @task_list" do
-      task_list = TaskList.create! valid_attributes
+      @controller.current_user
       get :show, {:id => task_list.to_param}, valid_session
       assigns(:task_list).should eq(task_list)
+    end
+
+    it "raises access denied when not assigned to the user" do
+      other_user_task_list = other_user.task_lists.create! Factory.attributes_for(:task_list)
+      expect {
+        get :show, {:id => other_user_task_list.to_param}
+      }.to raise_error(CanCan::AccessDenied)
+    end
+
+    it "raises access denied when not logged in" do
+      sign_out @user
+      expect {
+        get :show, {:id => task_list.to_param}
+      }.to raise_error(CanCan::AccessDenied)
     end
   end
 
@@ -31,13 +42,33 @@ describe TaskListsController do
       get :new, {}, valid_session
       assigns(:task_list).should be_a_new(TaskList)
     end
+
+    it "raises access denied when not logged in" do
+      sign_out @user
+      expect {
+        get :new
+      }.to raise_error(CanCan::AccessDenied)
+    end
   end
 
   describe "GET edit" do
     it "assigns the requested task_list as @task_list" do
-      task_list = TaskList.create! valid_attributes
       get :edit, {:id => task_list.to_param}, valid_session
       assigns(:task_list).should eq(task_list)
+    end
+
+    it "raises access denied if not on the task list" do
+      other_user_task_list = other_user.task_lists.create! Factory.attributes_for(:task_list)
+      expect {
+        get :edit, {:id => other_user_task_list.to_param}
+      }.to raise_error(CanCan::AccessDenied)
+    end
+
+    it "raises access denied if not logged in" do
+      sign_out @user
+      expect {
+        get :edit, {:id => task_list.to_param}
+      }.to raise_error(CanCan::AccessDenied)
     end
   end
 
@@ -59,45 +90,50 @@ describe TaskListsController do
         post :create, {:task_list => valid_attributes}, valid_session
         response.should redirect_to(TaskList.last)
       end
+
+      it "assigns the new task list to the current user" do
+        post :create, {:task_list => valid_attributes}, valid_session
+        assigns(:task_list).users.should eq([@user])
+      end
     end
 
     describe "with invalid params" do
       it "assigns a newly created but unsaved task_list as @task_list" do
         # Trigger the behavior that occurs when invalid params are submitted
-        TaskList.any_instance.stub(:save).and_return(false)
+        TaskList.any_instance.stub(:valid?).and_return(false)
         post :create, {:task_list => {}}, valid_session
         assigns(:task_list).should be_a_new(TaskList)
       end
 
       it "re-renders the 'new' template" do
         # Trigger the behavior that occurs when invalid params are submitted
-        TaskList.any_instance.stub(:save).and_return(false)
+        TaskList.any_instance.stub(:valid?).and_return(false)
         post :create, {:task_list => {}}, valid_session
         response.should render_template("new")
       end
+    end
+
+    it "raises access denied if not logged in" do
+      sign_out @user
+      expect {
+        post :create, {:task => {}}
+      }.to raise_error(CanCan::AccessDenied)
     end
   end
 
   describe "PUT update" do
     describe "with valid params" do
       it "updates the requested task_list" do
-        task_list = TaskList.create! valid_attributes
-        # Assuming there are no other task_lists in the database, this
-        # specifies that the TaskList created on the previous line
-        # receives the :update_attributes message with whatever params are
-        # submitted in the request.
         TaskList.any_instance.should_receive(:update_attributes).with({'these' => 'params'})
         put :update, {:id => task_list.to_param, :task_list => {'these' => 'params'}}, valid_session
       end
 
       it "assigns the requested task_list as @task_list" do
-        task_list = TaskList.create! valid_attributes
         put :update, {:id => task_list.to_param, :task_list => valid_attributes}, valid_session
         assigns(:task_list).should eq(task_list)
       end
 
       it "redirects to the task_list" do
-        task_list = TaskList.create! valid_attributes
         put :update, {:id => task_list.to_param, :task_list => valid_attributes}, valid_session
         response.should redirect_to(task_list)
       end
@@ -105,36 +141,57 @@ describe TaskListsController do
 
     describe "with invalid params" do
       it "assigns the task_list as @task_list" do
-        task_list = TaskList.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        TaskList.any_instance.stub(:save).and_return(false)
+        TaskList.any_instance.stub(:valid?).and_return(false)
         put :update, {:id => task_list.to_param, :task_list => {}}, valid_session
         assigns(:task_list).should eq(task_list)
       end
 
       it "re-renders the 'edit' template" do
-        task_list = TaskList.create! valid_attributes
-        # Trigger the behavior that occurs when invalid params are submitted
-        TaskList.any_instance.stub(:save).and_return(false)
+        TaskList.any_instance.stub(:valid?).and_return(false)
         put :update, {:id => task_list.to_param, :task_list => {}}, valid_session
         response.should render_template("edit")
       end
+    end
+
+    it "raises access denied if not assigned to the task" do
+      other_user_task_list = other_user.task_lists.create! Factory.attributes_for(:task_list)
+      expect {
+        put :update, {:id => other_user_task_list.to_param, :task_list => {}}
+      }.to raise_error(CanCan::AccessDenied)
+    end
+
+    it "raises access denied if not logged in" do
+      sign_out @user
+      expect {
+        put :update, {:id => task_list.to_param, :task_list => {}}
+      }.to raise_error(CanCan::AccessDenied)
     end
   end
 
   describe "DELETE destroy" do
     it "destroys the requested task_list" do
-      task_list = TaskList.create! valid_attributes
       expect {
         delete :destroy, {:id => task_list.to_param}, valid_session
       }.to change(TaskList, :count).by(-1)
     end
 
-    it "redirects to the task_lists list" do
-      task_list = TaskList.create! valid_attributes
+    it "redirects to the user profile" do
       delete :destroy, {:id => task_list.to_param}, valid_session
-      response.should redirect_to(task_lists_url)
+      response.should redirect_to(user_path(@user))
+    end
+
+    it "raises access denied if not assigned to the task" do
+      other_user_task_list = other_user.task_lists.create! Factory.attributes_for(:task_list)
+      expect {
+        delete :destroy, {:id => other_user_task_list.to_param}
+      }.to raise_error(CanCan::AccessDenied)
+    end
+
+    it "raises access denied if not logged in" do
+      sign_out @user
+      expect {
+        delete :destroy, {:id => task_list.to_param}
+      }.to raise_error(CanCan::AccessDenied)
     end
   end
-
 end

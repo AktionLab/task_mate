@@ -3,10 +3,6 @@ require "spec_helper"
 describe TaskListsController do
   describe "routing" do
 
-    it "routes to #index" do
-      get("/task_lists").should route_to("task_lists#index")
-    end
-
     it "routes to #new" do
       get("/task_lists/new").should route_to("task_lists#new")
     end

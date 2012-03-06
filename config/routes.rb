@@ -7,5 +7,6 @@ TaskMate::Application.routes.draw do
 
   root :to => 'tasks#new'
   resources :tasks, :except => [:index]
+  resources :task_lists, :except => [:index]
 end
 
