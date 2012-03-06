@@ -14,6 +14,10 @@ class Ability
         task.assignments.first.assignable == user
       end
 
+      can :create, TaskList
+      can [:read, :update, :destroy], TaskList do |task_list|
+        task_list.users.include? user
+      end
     end
 
     # Define abilities for the passed in user here. For example:
