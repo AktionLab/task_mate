@@ -23,12 +23,9 @@ describe TaskList do
     it "should remove assignments when destroyed" do
       task_list = Factory(:task_list)
       task_list.tasks.create! Factory.attributes_for(:task)
-      puts Assignment.count
       expect {
         task_list.destroy
       }.to change { Assignment.count }.by(-1)
-      puts Assignment.count
-      #raise 'foo'
     end
 
     it 'should add a task_lists scope to assignments' do

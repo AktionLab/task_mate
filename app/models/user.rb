@@ -9,12 +9,8 @@ class User < ActiveRecord::Base
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me, :first_name, :last_name, :alias_name
 
-  has_many :assignments, :as => :assignable, :dependent => :delete_all
-  has_many :tasks, :through => :assignments
+  has_assignments
   has_and_belongs_to_many :task_lists
-
-  Assignment.class_eval { scope :users, where(:assignable_type => 'User') }
-  Task.class_eval { def users; assignments.users.map(&:assignable); end }
 
   validates :first_name, :presence => true, :length => {:maximum => 255}
   validates :last_name, :presence => true, :length => {:maximum => 255}
