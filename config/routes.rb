@@ -1,5 +1,5 @@
 TaskMate::Application.routes.draw do
-  root :to => 'tasks#new'
+  root :to => 'root#index'
   resources :task_lists
 
   devise_for :users
