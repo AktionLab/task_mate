@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe "tasks/new" do
   before(:each) do
-    @user = stub_model(User)
+    @user = stub_model(User, :alias_name => "Alias")
     @controller.stub(:current_user => @user)
     assign(:task, stub_model(Task,
       :subject => "MyString",

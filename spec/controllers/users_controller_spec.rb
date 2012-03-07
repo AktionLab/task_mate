@@ -19,7 +19,10 @@ describe UsersController do
 
     describe "for other users" do
       it 'should deny access' do
-        expect { get :show, {:id => Factory.create(:user).to_param} }.to raise_error(CanCan::AccessDenied)
+        other_user = Factory.create(:user)
+        expect { 
+          get :show, {:id => other_user.to_param}
+        }.to raise_error(CanCan::AccessDenied)
       end
     end
   end
