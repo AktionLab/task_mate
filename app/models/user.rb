@@ -18,5 +18,17 @@ class User < ActiveRecord::Base
                          :length => {:maximum => 255},
                          :uniqueness => {:case_sensitive => false},
                          :exclusion => {:in => RESTRICTED_ALIASES}
+
+  def to_param
+    persisted? ? alias_name.downcase : nil
+  end
+
+  def self.find(id)
+    begin
+      super
+    rescue ActiveRecord::RecordNotFound
+      where(['lower(alias_name) = ?', id.downcase]).first
+    end
+  end
 end
 

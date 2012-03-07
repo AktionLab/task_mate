@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 restricted_user_alias_names = %w(sign_in sign_out sign_up users tasks about contact contact_us admin)
+
 describe User do
   describe 'factories' do
     it 'should have a valid default factory' do
@@ -75,6 +76,25 @@ describe User do
       task = user1.tasks.create! Factory.attributes_for(:task)
       user2.tasks << task
       task.users.should == [user1,user2]
+    end
+  end
+
+  describe '#to_param' do
+    it "should return the lower case alias" do
+      user = Factory.create(:user, :alias_name => "Alias_Name")
+      user.to_param.should == "alias_name"
+    end
+  end
+
+  describe '#find' do
+    it "should return a record that matches the id" do
+      user = Factory.create(:user)
+      User.find(user.id).should == user
+    end
+
+    it "should return a record that matches the alias" do
+      user = Factory.create(:user)
+      User.find(user.alias_name).should == user
     end
   end
 end
