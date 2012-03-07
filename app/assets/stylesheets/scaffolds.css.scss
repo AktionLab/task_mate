@@ -43,6 +43,23 @@ div {
   }
 }
 
+#flash span {
+  width: 100%;
+  font-size: 21px;
+  line-height: 21px;
+  padding: 4px 0px 4px 7px;
+  display: inline-block;
+  margin-bottom: 11px;
+  &.alert {
+    background-color: #FFAAAA;
+    border: 1px solid #FF3333;
+  }
+  &.notice {
+    background-color: #AAFFAA;
+    border: 1px solid #33FF33;
+  }
+}
+
 #notice {
   color: green;
 }
