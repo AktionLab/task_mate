@@ -1,13 +1,6 @@
 <li class="task" id="<%= dom_id(task) %>">
-  <h2 class="subject">
-    <% if can? :update, task %>
-      <span class="edit action"><%= link_to "Edit", edit_task_path(task) %></span>
-    <% end %>
-    <% if can? :destroy, task %>
-      <span class="destroy action"><%= link_to "Destroy", task_path(task), :method => :delete %></span>
-    <% end %>
-    <%= link_to task.subject, task %>
-    <span class="created_at">Created <%= time_ago_in_words task.created_at %> ago</span>
-  </h2>
+  <%= render 'tasks/menu', :task => task %>
+  <h2 class="subject"><%= link_to task.subject, task %></h2>
+  <div class="created_at">Created <%= time_ago_in_words task.created_at %> ago</div>
   <p class="description"><%= task.description %></p>
 </li>
