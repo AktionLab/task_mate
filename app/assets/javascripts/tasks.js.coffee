@@ -4,6 +4,6 @@
 
 $ ->
   $("li.task").mouseenter ->
-    $(this).find('ul.task-menu').slideDown()
+    $(this).find('ul.task-menu').show()
   $("li.task").mouseleave ->
-    $(this).find('ul.task-menu').slideUp()
+    $(this).find('ul.task-menu').hide()

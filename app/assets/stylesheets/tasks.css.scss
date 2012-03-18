@@ -28,7 +28,7 @@ ul#tasks {
     }
 
     ul.task-menu {
-      display:block;
+      display: none;
       list-style-type: none;
       height: 20px;
       margin: 0;
@@ -46,6 +46,20 @@ ul#tasks {
         
         a { &:hover { background-color: #DDD; } }
       }
+    }
+  }
+}
+
+header.tasks-menu {
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+
+    li {
+      float: left;
+      margin-left: 10px;
     }
   }
 }
