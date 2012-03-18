@@ -8,6 +8,11 @@ class Task < ActiveRecord::Base
   validates :subject, :presence => true, :length => {:maximum => 255} 
   validates :description, :length => {:maximum => 1000}
 
+  scope :current, where(:state => 'new')
+  scope :completed, where(:state => 'completed')
+  scope :cancelled, where(:state => 'cancelled')
+  scope :expired, where(:state => 'expired')
+
   def new?
     state == 'new'
   end

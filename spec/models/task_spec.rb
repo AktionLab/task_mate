@@ -30,6 +30,33 @@ describe Task do
     end
   end
 
+  describe 'scopes' do
+    before :each do
+      @user = Factory.create(:user)
+      @tasks = 3.times.map { @user.tasks.create! Factory.attributes_for(:task) }
+    end
+
+    it "should have a current scope for tasks still new" do
+      @tasks.first.complete!
+      @user.tasks.current.should eq(@tasks[1..2])
+    end
+
+    it "should have a completed scope for completed tasks" do
+      @tasks.first.complete!
+      @user.tasks.completed.should eq([@tasks[0]])
+    end
+
+    it "should have a cancelled scope for cancelled tasks" do
+      @tasks.first.cancel!
+      @user.tasks.cancelled.should eq([@tasks[0]])
+    end
+
+    it "should have an expired scope for expired tasks" do
+      @tasks.first.expire!
+      @user.tasks.expired.should eq([@tasks[0]])
+    end
+  end
+
   describe 'state' do
     it 'by default is new' do
       task.state.should == 'new'
