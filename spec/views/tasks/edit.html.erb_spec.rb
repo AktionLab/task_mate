@@ -33,7 +33,7 @@ describe "tasks/edit" do
 
   it "has a link to go back to the users show action" do
     render
-    rendered.should have_selector("a[href='/users/#{@user.to_param}']")
+    rendered.should have_selector("a[href='/#{@user.to_param}']")
   end
 end
 

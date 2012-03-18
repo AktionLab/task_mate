@@ -4,11 +4,9 @@ TaskMate::Application.routes.draw do
 
   devise_for :users
 
-  resources :users, :only => [:show]
-
   resources :tasks, :except => [:index]
   resources :task_lists, :except => [:index]
 
-  get '/:id', :to => 'users#show'
+  get '/:id', :to => 'users#show', :as => :user
 end
 

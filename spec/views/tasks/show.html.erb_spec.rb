@@ -24,6 +24,6 @@ describe "tasks/show" do
 
   it "has a link back to the user show page" do
     render
-    rendered.should have_selector("a[href='/users/#{@user.to_param}']")
+    rendered.should have_selector("a[href='/#{@user.to_param}']")
   end
 end
