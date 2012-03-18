@@ -4,6 +4,14 @@
   <%= link_to 'Manage Account', edit_registration_path(@user), :class => 'manage' %>
 </header>
 
+<header class="tasks-menu">
+  <ul>
+    <li class="scope current">  <%= link_to "Current",   user_path(@user)                        %></li>
+    <li class="scope completed"><%= link_to "Completed", user_path(@user, :scope => 'completed') %></li>
+    <li class="scope cancelled"><%= link_to "Cancelled", user_path(@user, :scope => 'cancelled') %></li>
+    <li class="scope expired">  <%= link_to "Expired",   user_path(@user, :scope => 'expired')   %></li>
+  </ul>
+</header>
 
 <ul id="tasks"><%= render @tasks %></ul>
 

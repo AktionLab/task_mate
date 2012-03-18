@@ -25,6 +25,28 @@ describe "users/show" do
     rendered.should match(/Alias/)
   end
 
+  describe "tasks-menu" do
+    it "has a current tab" do
+      render
+      rendered.should have_selector('header.tasks-menu > ul > li.scope.current')
+    end
+
+    it "has a completed tab" do
+      render
+      rendered.should have_selector('header.tasks-menu > ul > li.scope.completed')
+    end
+
+    it "has a cancelled tab" do
+      render
+      rendered.should have_selector('header.tasks-menu > ul > li.scope.cancelled')
+    end
+
+    it "has an expired tab" do
+      render
+      rendered.should have_selector('header.tasks-menu > ul > li.scope.expired')
+    end
+  end
+
   describe "tasks" do
     it "has a #tasks element" do
       render
