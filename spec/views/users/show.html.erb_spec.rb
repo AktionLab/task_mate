@@ -77,24 +77,24 @@ describe "users/show" do
     describe "authorized actions" do
       it "does not include the edit link when not allowed" do
         render
-        rendered.should_not have_selector(".edit.action")
+        rendered.should_not have_selector("ul.task-menu > li > a > img[alt='Edit']")
       end
 
       it "include the edit link when allowed" do
         @ability.can :update, Task
         render
-        rendered.should have_selector(".edit.action")
+        rendered.should have_selector("ul.task-menu > li > a > img[alt='Edit']")
       end
 
       it "does not include the destroy link when not allowed" do
         render
-        rendered.should_not have_selector(".destroy.action")
+        rendered.should_not have_selector("ul.task-menu > li > a > img[alt='Destroy']")
       end
 
-      it "include the edit link when allowed" do
+      it "include the destroy link when allowed" do
         @ability.can :destroy, Task
         render
-        rendered.should have_selector(".destroy.action")
+        rendered.should have_selector("ul.task-menu > li > a > img[alt='Destroy']")
       end
     end
   end
