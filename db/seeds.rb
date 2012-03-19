@@ -24,19 +24,19 @@ end
 3.times do |n|
   @user.task_lists.create!(:name => "Task List #{n+1}").tap do |task_list|
     5.times do |n|
-      @user.personal_task_list.tasks.create! :subject => Faker::Lorem.sentence(7), :description => Faker::Lorem.paragraph(3)
+      task_list.tasks.create! :subject => Faker::Lorem.sentence(7), :description => Faker::Lorem.paragraph(3)
     end
 
     5.times do |n|
-      @user.personal_task_list.tasks.create!(:subject => Faker::Lorem.sentence(7), :description => Faker::Lorem.paragraph(3)).tap {|task| task.complete!}
+      task_list.tasks.create!(:subject => Faker::Lorem.sentence(7), :description => Faker::Lorem.paragraph(3)).tap {|task| task.complete!}
     end
 
     5.times do |n|
-      @user.personal_task_list.tasks.create!(:subject => Faker::Lorem.sentence(7), :description => Faker::Lorem.paragraph(3)).tap {|task| task.cancel!}
+      task_list.tasks.create!(:subject => Faker::Lorem.sentence(7), :description => Faker::Lorem.paragraph(3)).tap {|task| task.cancel!}
     end
 
     5.times do |n|
-      @user.personal_task_list.tasks.create!(:subject => Faker::Lorem.sentence(7), :description => Faker::Lorem.paragraph(3)).tap {|task| task.expire!}
+      task_list.tasks.create!(:subject => Faker::Lorem.sentence(7), :description => Faker::Lorem.paragraph(3)).tap {|task| task.expire!}
     end
   end
 end
