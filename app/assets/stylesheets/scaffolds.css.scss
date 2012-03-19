@@ -5,13 +5,11 @@ body {
   font-size: 13px;
   line-height: 18px;
   background-color: blue;
+  margin: 0;
+  padding: 0;
 }
 
 #page_wrapper {
-  width: 1000px;
-  margin: 0 auto;
-  background-color: #F6F6F6;
-  padding: 10px 15px 20px 15px;
 }
 
 p, ol, ul, td {
@@ -40,23 +38,6 @@ a {
 div {
   &.field, &.actions {
     margin-bottom: 10px;
-  }
-}
-
-#flash span {
-  width: 100%;
-  font-size: 21px;
-  line-height: 21px;
-  padding: 4px 0px 4px 7px;
-  display: inline-block;
-  margin-bottom: 11px;
-  &.alert {
-    background-color: #FFAAAA;
-    border: 1px solid #FF3333;
-  }
-  &.notice {
-    background-color: #AAFFAA;
-    border: 1px solid #33FF33;
   }
 }
 
@@ -92,3 +73,92 @@ div {
     list-style: square;
   }
 }
+
+#page_wrapper {
+  position: absolute;
+  top: 0px; left: 0px;
+  width: 100%; height: 100%;
+  background-color: #F6F6F6;
+  &.flash {
+    padding-top: 31px;
+  }
+
+  header.user {
+    position: absolute;
+    top: 0px; left: 0px; right: 0px;
+    height: 42px;
+    padding: 0px; margin: 0px;
+    /*background: #CCC;*/
+    line-height: 32px;
+    .alias {
+      font-size: 32px;
+      font-weight: bold;
+      margin-left: 12px;
+    }
+    .name {
+      font-size: 28px;
+      color: #666;
+    }
+    a.manage {
+      float: right;
+      margin-right: 16px;
+    }
+  }
+
+  header.tasks-menu {
+    position: absolute;
+    top: 42px; left: 0px; bottom: 0px;
+    width: 140px;
+    padding: 12px 0px 0px 15px;
+    /*background-color: #CFF;*/
+    div.new-task {
+      padding: 4px 6px 6px 4px;
+      text-align: center;
+      width: 80px;
+      margin-left: 15px;
+      background-color: #D14836;
+      border-radius: 2px;
+      a {
+        text-transform: uppercase;
+        text-decoration: none;
+        color: white;
+        font-size: 11px;
+        font-weight: bold;
+        &:hover {
+          background: none;
+        }
+      }
+    }
+    ul {
+      list-style-type: none;
+      margin: 0;
+      margin-top: 10px;
+      padding: 0;
+      li {
+      }
+    }
+  }
+
+  #content {
+    position: absolute;
+    top: 42px; left: 155px; right: 20px; bottom: 0px;
+    /*background-color: #FCF;*/
+
+    #flash span {
+      height: 21px; width: 100%;
+      font-size: 21px;
+      line-height: 21px;
+      padding: 4px 0px 4px 7px;
+      display: inline-block;
+      &.alert {
+        background-color: #FFAAAA;
+        border: 1px solid #FF3333;
+      }
+      &.notice {
+        background-color: #AAFFAA;
+        border: 1px solid #33FF33;
+      }
+    }
+  }
+}
+

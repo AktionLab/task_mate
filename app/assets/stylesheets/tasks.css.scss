@@ -1,19 +1,27 @@
 ul#tasks {
   list-style-type: none;
   padding: 0px;
+  margin: 0px;
 
   li.task {
-    background-color: #C7F2EF;
-    border: 1px solid #22F2EF;
-    margin-bottom: 10px;
-    width: 500px;
+    background-color: #EEE;
+    border: 1px solid #CCC;
+    margin-bottom: 0px;
     
     h2.subject {
       display: inline-block;
-      width: 100%;
-      margin: 10px 0px 0px 15px;
-      font-weight: bold;
+      margin: 5px 0px 5px 25px;
       font-size: 12px;
+      color: #222;
+      a {
+        text-decoration: none;
+        font-weight: normal;
+        color: #222;
+        &:hover {
+          background: none;
+          color: #222;
+        }
+      }
     }
 
     p.description {
@@ -28,12 +36,11 @@ ul#tasks {
     }
 
     ul.task-menu {
-      display: none;
+      float: right;
       list-style-type: none;
-      height: 20px;
       margin: 0;
       padding: 0;
-      background: #DDD;
+      height: 0px;
 
       li {
         float:right;
@@ -42,24 +49,9 @@ ul#tasks {
         padding: 0 5px;
         display: inline-block;
         height: 16px;
-        font-size: 10px;
         
         a { &:hover { background-color: #DDD; } }
       }
-    }
-  }
-}
-
-header.tasks-menu {
-  ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-
-    li {
-      float: left;
-      margin-left: 10px;
     }
   }
 }

@@ -1,6 +1,4 @@
 <li class="task" id="<%= dom_id(task) %>">
-  <%= render 'tasks/menu', :task => task %>
   <h2 class="subject"><%= link_to task.subject, task %></h2>
-  <div class="created_at">Created <%= time_ago_in_words task.created_at %> ago</div>
-  <p class="description"><%= task.description %></p>
+  <%= render 'tasks/menu', :task => task %>
 </li>

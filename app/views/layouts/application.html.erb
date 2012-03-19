@@ -10,17 +10,37 @@
   <% if Rails.env.development? %>
     <%= render 'shared/dev_menu' %>
   <% end %>
-  <div id="page_wrapper">
-    <div id="flash">
-      <%=
-      if notice
-        content_tag :span, notice, :class => 'notice'
-      elsif alert
-        content_tag :span, alert, :class => 'alert'
-      end
-      %>
+  <div id="page_wrapper" class="<%= if notice or alert then "flash" end %>">
+    <header class="user">
+      <span class="alias"><%= current_user.alias_name %></span>
+      <span class="name">(<%= current_user.first_name %> <%= current_user.last_name %>)</span>
+      <%= link_to 'Manage Account', edit_registration_path(current_user), :class => 'manage' %>
+    </header>
+
+    <header class="tasks-menu">
+      <div class="new-task">
+        <%= link_to 'New Task', new_task_path %>
+      </div>
+      <ul>
+        <li class="scope current">  <%= link_to "Current",   user_path(current_user)                        %></li>
+        <li class="scope completed"><%= link_to "Completed", user_path(current_user, :scope => 'completed') %></li>
+        <li class="scope cancelled"><%= link_to "Cancelled", user_path(current_user, :scope => 'cancelled') %></li>
+        <li class="scope expired">  <%= link_to "Expired",   user_path(current_user, :scope => 'expired')   %></li>
+      </ul>
+    </header>
+    
+    <div id="content">
+      <div id="flash">
+        <%=
+        if notice
+          content_tag :span, notice, :class => 'notice'
+        elsif alert
+          content_tag :span, alert, :class => 'alert'
+        end
+        %>
+      </div>
+      <%= yield %>
     </div>
-    <%= yield %>
   </div>
 </body>
 </html>
