@@ -36,6 +36,7 @@ describe User do
     it { should_not allow_mass_assignment_of(:last_sign_in_at) }
     it { should_not allow_mass_assignment_of(:current_sign_in_ip) }
     it { should_not allow_mass_assignment_of(:last_sign_in_ip) }
+    it { should_not allow_mass_assignment_of(:personal_task_list_id) }
 
     context 'uniqueness' do
       before(:each) { Factory(:user) }
@@ -54,6 +55,7 @@ describe User do
     it { should have_many(:assignments) }
     it { should have_many(:tasks) }
     it { should have_and_belong_to_many(:task_lists) }
+    it { should belong_to(:personal_task_list) }
 
     it 'should remove all assignments when deleted' do
       assignment = Factory(:assignment)
@@ -76,6 +78,13 @@ describe User do
       task = user1.tasks.create! Factory.attributes_for(:task)
       user2.tasks << task
       task.users.should == [user1,user2]
+    end
+  end
+
+  describe 'after_create' do
+    it 'should create the users personal task list' do
+      user = Factory(:user)
+      user.personal_task_list.should_not be_nil
     end
   end
 

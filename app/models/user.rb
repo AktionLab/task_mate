@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me, :first_name, :last_name, :alias_name
 
   has_assignments
+  belongs_to :personal_task_list, :class_name => 'TaskList'
   has_and_belongs_to_many :task_lists
 
   validates :first_name, :presence => true, :length => {:maximum => 255}
@@ -18,6 +19,10 @@ class User < ActiveRecord::Base
                          :length => {:maximum => 255},
                          :uniqueness => {:case_sensitive => false},
                          :exclusion => {:in => RESTRICTED_ALIASES}
+
+  after_create do
+    self.create_personal_task_list :name => self.alias_name
+  end
 
   def to_param
     persisted? ? alias_name.downcase : nil
