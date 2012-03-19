@@ -84,6 +84,7 @@ describe User do
   describe 'after_create' do
     it 'should create the users personal task list' do
       user = Factory(:user)
+      user.reload
       user.personal_task_list.should_not be_nil
     end
   end

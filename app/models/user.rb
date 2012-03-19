@@ -22,15 +22,16 @@ class User < ActiveRecord::Base
 
   after_create do
     self.create_personal_task_list :name => self.alias_name
+    self.save!
   end
 
   def to_param
     persisted? ? alias_name.downcase : nil
   end
 
-  def self.find(id)
+  def self.find(id, options={})
     begin
-      super
+      super(id, options)
     rescue ActiveRecord::RecordNotFound
       where(['lower(alias_name) = ?', id.downcase]).first
     end
