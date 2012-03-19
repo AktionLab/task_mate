@@ -5,7 +5,11 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    @tasks = @user.tasks.send(@scope)
+    if params[:task_list]
+      @tasks = @user.task_lists.find(params[:task_list]).tasks.send(@scope)
+    else
+      @tasks = @user.personal_task_list.tasks.send(@scope)
+    end
 
     respond_to do |format|
       format.html # show.html.erb

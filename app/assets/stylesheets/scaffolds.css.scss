@@ -125,12 +125,20 @@ div {
         }
       }
     }
-    ul {
+    ul.task-lists {
       list-style-type: none;
       margin: 0;
       margin-top: 10px;
       padding: 0;
-      li {
+      li.my-tasks {
+      }
+      li.task-list {
+        list-style-type: none;
+        ul.scopes {
+          display: none;
+          list-style-type: none;
+          padding-left: 15px;
+        }
       }
     }
   }

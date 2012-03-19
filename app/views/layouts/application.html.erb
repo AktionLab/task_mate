@@ -21,11 +21,25 @@
       <div class="new-task">
         <%= link_to 'New Task', new_task_path %>
       </div>
-      <ul>
-        <li class="scope current">  <%= link_to "Current",   user_path(current_user)                        %></li>
-        <li class="scope completed"><%= link_to "Completed", user_path(current_user, :scope => 'completed') %></li>
-        <li class="scope cancelled"><%= link_to "Cancelled", user_path(current_user, :scope => 'cancelled') %></li>
-        <li class="scope expired">  <%= link_to "Expired",   user_path(current_user, :scope => 'expired')   %></li>
+      <ul class="task-lists">
+        <li class="my-tasks task-list">
+          <%= link_to "My Tasks", user_path(current_user) %>
+          <ul class="scopes">
+            <li class="scope completed"><%= link_to "Completed", user_path(current_user, :scope => 'completed') %></li>
+            <li class="scope cancelled"><%= link_to "Cancelled", user_path(current_user, :scope => 'cancelled') %></li>
+            <li class="scope expired">  <%= link_to "Expired",   user_path(current_user, :scope => 'expired')   %></li>
+          </ul>
+        </li>
+        <% current_user.task_lists.each do |task_list| %>
+          <li id="<%= dom_id(task_list) %>" class="task-list">
+            <%= link_to task_list.name, user_path(:task_list => task_list) %>
+            <ul class="scopes">
+              <li class="scope completed"><%= link_to "Completed", user_path(task_list, :task_list => task_list, :scope => 'completed') %></li>
+              <li class="scope completed"><%= link_to "Cancelled", user_path(task_list, :task_list => task_list, :scope => 'cancelled') %></li>
+              <li class="scope completed"><%= link_to "Expired",   user_path(task_list, :task_list => task_list, :scope => 'expired') %></li>
+            </ul>
+          </li>
+        <% end %>
       </ul>
     </header>
     
